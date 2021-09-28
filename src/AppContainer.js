@@ -12,6 +12,8 @@ import { WalletOpen } from "./routes/WalletOpen";
 import { WalletImport } from "./routes/WalletImport";
 import { ErrorFallback } from "./shared/components/ErrorFallback";
 import { ErrorBoundary } from "react-error-boundary";
+import { Register } from "./routes/Register";
+import { NewWallet } from "./routes/NewWallet";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -38,7 +40,7 @@ export const AppContainer = () => {
       if (walletExists) {
         history.replace(UrlService.walletOpen());
       } else {
-        history.replace(UrlService.walletImport());
+        history.replace(UrlService.register());
       }
     }
 
@@ -60,16 +62,20 @@ export const AppContainer = () => {
         <>
           <BetaBanner />
 
-          <Route exact path="/wallet-import">
-            <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <Route exact path="/register">
+              <Register />
+            </Route>
+            <Route exact path="/new-wallet">
+              <NewWallet />
+            </Route>
+            <Route exact path="/wallet-import">
               <WalletImport />
-            </ErrorBoundary>
-          </Route>
-          <Route exact path="/wallet-open">
-            <ErrorBoundary FallbackComponent={ErrorFallback}>
+            </Route>
+            <Route exact path="/wallet-open">
               <WalletOpen />
-            </ErrorBoundary>
-          </Route>
+            </Route>
+          </ErrorBoundary>
 
           {isAppInitiated && selectedWallet && address && <MainView />}
 

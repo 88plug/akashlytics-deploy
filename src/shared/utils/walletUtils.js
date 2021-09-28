@@ -1,4 +1,5 @@
 import { DirectSecp256k1HdWallet, extractKdfConfiguration } from "@cosmjs/proto-signing";
+import { stringToPath } from "@cosmjs/crypto";
 
 // default cosmojs KdfConfiguration
 const basicPasswordHashingOptions = {
@@ -34,6 +35,16 @@ export function deleteWalletFromStorage(address, deleteDeployments) {
     }
   }
 }
+
+export async function generateNewWallet(numberOfWords, password) {
+  const wallet = await DirectSecp256k1HdWallet.generate(numberOfWords, {
+    prefix: "akash",
+    bip39Password: password
+  });
+  return wallet;
+}
+
+export async function createWallet(wallet) {}
 
 export async function importWallet(mnemonic, name, password) {
   const wallet = await DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
